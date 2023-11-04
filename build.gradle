@@ -1,33 +1,14 @@
 plugins {
-  //inlude the nodeJS plugin to execute nodejs and npm tasks
-  id "com.moowork.node" version "1.2.0"
+    id "com.moowork.node" version "1.2.0"
 }
 
 node {
-	download = true
-	version = "9.11.1"
-	npmVersion = "5.6.0"
+    download = true
+    version = "9.11.1"
+    npmVersion = "5.6.0"
 }
 
-//declare a build task
 task build
-
-//declare a task to create a zip of the app
-// task zip(type: Zip) {
-// 	from ('.') {
-// 		include "*"
-// 		include "bin/**"
-// 		include "data/**"
-// 		include "node_modules/**"
-// 		include "public/**"
-// 		include "routes/**"
-// 		include "views/**"
-// 	}
-// 	// destinationDir(file("dist"))
-// 	destinationDir file('dist')
-// 	//destination file("dist")
-// 	baseName "trainSchedule"
-// }
 
 task zip(type: Zip) {
     from ('.') {
@@ -39,14 +20,11 @@ task zip(type: Zip) {
         include "routes/**"
         include "views/**"
     }
-    archiveFileName = "trainSchedule.zip" // Set the desired ZIP file name
-    into 'dist' // Set the target directory inside the ZIP archive
-    destinationDir = file("$buildDir/dist") // Set the destination directory for the ZIP file
+    archiveFileName = "trainSchedule.zip"
+    destinationDir = file("$buildDir/dist")
 }
 
-//declare task dependencies
 build.dependsOn zip
 zip.dependsOn npm_build
 npm_build.dependsOn npm_test
 npm_test.dependsOn npmInstall
-npm_build.dependsOn npmInstall
