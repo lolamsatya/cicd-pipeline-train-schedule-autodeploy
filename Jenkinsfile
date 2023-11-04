@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "bhavukm/train-schedule"
+        DOCKER_IMAGE_NAME = "lolamsatya/train-schedule"
     }
     stages {
         stage('Build') {
@@ -20,9 +20,9 @@ pipeline {
             steps {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
-                    app.inside {
-                        sh 'echo Hello, World!'
-                    }
+                    // app.inside {
+                    //     sh 'echo Hello, World!'
+                    // }
                 }
             }
         }
@@ -40,9 +40,9 @@ pipeline {
             }
         }
         stage('CanaryDeploy') {
-            // when {
-            //     branch 'master'
-            // }
+            when {
+                branch 'master'
+            }
             environment { 
                 CANARY_REPLICAS = 1
             }
@@ -55,9 +55,9 @@ pipeline {
             }
         }
         stage('DeployToProduction') {
-            // when {
-            //     branch 'master'
-            // }
+            when {
+                branch 'master'
+            }
             environment { 
                 CANARY_REPLICAS = 0
             }
