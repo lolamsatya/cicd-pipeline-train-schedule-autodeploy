@@ -1,13 +1,9 @@
-task clean(type: Delete) {
-    delete 'build'
-}
-
 plugins {
     id "com.moowork.node" version "1.2.0"
 }
 
 node {
-    download = true
+    // download = true
     version = "20.9.0"
     npmVersion = "10.1.0"
 }
