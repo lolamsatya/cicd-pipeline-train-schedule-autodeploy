@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "lolam/train-schedule:${env.BUILD_NUMBER}"
+        DOCKER_IMAGE_NAME = "lolam/train-schedule"
     }
     stages {
         stage('Build') {
@@ -33,8 +33,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                        app.push()
-                        app.push("latest")
+                        docker.push("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                        docker.push("${DOCKER_IMAGE_NAME}:latest")
                     }
                 }
             }
