@@ -21,7 +21,6 @@ task zip(type: Zip) {
         include "views/**"
     }
     archiveFileName = "trainSchedule.zip"
-    destinationDir = file("$buildDir/dist")
 }
 
 build.dependsOn zip
