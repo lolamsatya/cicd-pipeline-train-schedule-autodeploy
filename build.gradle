@@ -1,3 +1,7 @@
+task clean(type: Delete) {
+    delete 'build'
+}
+
 plugins {
     id "com.moowork.node" version "1.2.0"
 }
