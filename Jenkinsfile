@@ -26,7 +26,19 @@ pipeline {
                 }
             }
         }
-        stage('Push Docker Image') {
+        stage('Push Docker Image latest') {
+            //when {
+            //    branch 'master'
+            //}
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                        docker.push("${DOCKER_IMAGE_NAME}:latest")
+                    }
+                }
+            }
+        }
+        stage('Push Docker Image tag') {
             //when {
             //    branch 'master'
             //}
@@ -34,7 +46,6 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
                         docker.push("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
-                        docker.push("${DOCKER_IMAGE_NAME}:latest")
                     }
                 }
             }
