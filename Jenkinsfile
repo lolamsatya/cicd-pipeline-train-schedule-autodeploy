@@ -33,6 +33,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                        echo "Pushing Docker Image: ${DOCKER_IMAGE_NAME}:latest"
                         docker.push("${DOCKER_IMAGE_NAME}:latest")
                     }
                 }
