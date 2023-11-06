@@ -33,6 +33,7 @@ pipeline {
                 try {
                         sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD https://registry.hub.docker.com"
                         sh "docker push ${DOCKER_IMAGE_NAME}:latest"
+                        sh "docker push ${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
                     } catch (Exception e) {
                         echo "Error: ${e.message}"
                         currentBuild.result = 'FAILURE'
