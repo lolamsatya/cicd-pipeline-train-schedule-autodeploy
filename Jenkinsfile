@@ -27,24 +27,22 @@ pipeline {
             }
         }
         stage('Push Docker Image latest') {
-            //when {
-            //    branch 'master'
-            //}
-            steps {
-                script {
-                    try {
-                        docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                            echo "Pushing Docker Image: ${DOCKER_IMAGE_NAME}:latest"
-                            docker.push("${DOCKER_IMAGE_NAME}:latest")
-                        }
-                    }catch (Exception e) {
+        steps {
+            script {
+                withCredentials([usernamePassword(credentialsId: "docker_hub_login", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                try {
+                        sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD https://registry.hub.docker.com"
+                        sh "docker push ${DOCKER_IMAGE_NAME}:latest"
+                    } catch (Exception e) {
                         echo "Error: ${e.message}"
                         currentBuild.result = 'FAILURE'
                         error "Failed to push Docker image"
                         }
+                    }
                 }
             }
         }
+
         stage('Push Docker Image tag') {
             //when {
             //    branch 'master'
