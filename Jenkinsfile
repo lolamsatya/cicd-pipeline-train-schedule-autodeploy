@@ -20,10 +20,8 @@ pipeline {
             steps {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
-                    def latestImageTag = "latest"
-                    app.tag(latestImageTag)
-                    def customImageTag = "${env.BUILD_NUMBER}"
-                    app.tag(customImageTag)
+                    app.tag("latest")
+                    app.tag("${env.BUILD_NUMBER}")
                     //app.inside {
                     //    sh 'echo Hello, World!'
                     //}
@@ -36,8 +34,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: "docker_hub_login", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                 try {
                         sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD https://registry.hub.docker.com"
-                        sh "docker push $latestImageTag"
-                        sh "docker push $customImageTag"
+                        sh "docker push $DOCKER_IMAGE_NAME:latest"
+                        sh "docker push $DOCKER_IMAGE_NAME:${env.BUILD_NUMBER}"
                     } catch (Exception e) {
                         echo "Error: ${e.message}"
                         currentBuild.result = 'FAILURE'
