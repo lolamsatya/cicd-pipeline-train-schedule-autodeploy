@@ -20,9 +20,9 @@ pipeline {
             steps {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
-                    def latestImageTag = "${DOCKER_IMAGE_NAME}:latest"
+                    def latestImageTag = "latest"
                     app.tag(latestImageTag)
-                    def customImageTag = "${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    def customImageTag = "${env.BUILD_NUMBER}"
                     app.tag(customImageTag)
                     //app.inside {
                     //    sh 'echo Hello, World!'
